@@ -11,6 +11,7 @@ public class SwiftFlutterShareMePlugin: NSObject, FlutterPlugin, SharingDelegate
     let _methodFaceBook = "facebook_share";
     let _methodTwitter = "twitter_share";
     let _methodInstagram = "instagram_share";
+    let _methodInstagram2 = "instagram_share2";
     let _methodSystemShare = "system_share";
     let _methodTelegramShare = "telegram_share";
     
@@ -69,6 +70,10 @@ public class SwiftFlutterShareMePlugin: NSObject, FlutterPlugin, SharingDelegate
         else if(call.method.elementsEqual(_methodInstagram)){
             let args = call.arguments as? Dictionary<String,Any>
             shareInstagram(args: args!)
+        }
+        else if(call.method.elementsEqual(_methodInstagram2)){
+            let args = call.arguments as? Dictionary<String,Any>
+            shareInstagram2(args: args!)
         }
         else if(call.method.elementsEqual(_methodTelegramShare)){
             let args = call.arguments as? Dictionary<String,Any>
@@ -317,6 +322,46 @@ public class SwiftFlutterShareMePlugin: NSObject, FlutterPlugin, SharingDelegate
         }
     }
     
+    // share image via instagram stories.
+    // @ args image url
+    func shareInstagram2(args:Dictionary<String,Any>)  {
+        let id=args["id"] as! String
+
+        guard let instagramURL = NSURL(string: "instagram://app") else {
+            if let result = result {
+                self.result?("Instagram app is not installed on your device")
+                result(false)
+            }
+            return
+        }
+
+        do{
+            try PHPhotoLibrary.shared().performChangesAndWait {
+                let instShareUrl:String? = "instagram://library?LocalIdentifier=" + id
+
+                //Share image
+                if UIApplication.shared.canOpenURL(instagramURL as URL) {
+                    if let sharingUrl = instShareUrl {
+                        if let urlForRedirect = NSURL(string: sharingUrl) {
+                            if #available(iOS 10.0, *) {
+                                UIApplication.shared.open(urlForRedirect as URL, options: [:], completionHandler: nil)
+                            }
+                            else{
+                                UIApplication.shared.openURL(urlForRedirect as URL)
+                            }
+                        }
+                        self.result?("Success")
+                    }
+                } else{
+                    self.result?("Instagram app is not installed on your device")
+                }
+            }
+
+        } catch {
+            print("Fail")
+        }
+    }
+
     //Facebook delegate methods
     public func sharer(_ sharer: Sharing, didCompleteWithResults results: [String : Any]) {
         print("Share: Success")
