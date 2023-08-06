@@ -11,7 +11,7 @@ public class SwiftFlutterShareMePlugin: NSObject, FlutterPlugin, SharingDelegate
     let _methodFaceBook = "facebook_share";
     let _methodTwitter = "twitter_share";
     let _methodInstagram = "instagram_share";
-    let _methodInstagram2 = "instagram_share2";
+    let _methodInstagramById = "instagram_share_id";
     let _methodSystemShare = "system_share";
     let _methodTelegramShare = "telegram_share";
     
@@ -71,9 +71,9 @@ public class SwiftFlutterShareMePlugin: NSObject, FlutterPlugin, SharingDelegate
             let args = call.arguments as? Dictionary<String,Any>
             shareInstagram(args: args!)
         }
-        else if(call.method.elementsEqual(_methodInstagram2)){
+        else if(call.method.elementsEqual(_methodInstagramById)){
             let args = call.arguments as? Dictionary<String,Any>
-            shareInstagram2(args: args!)
+            shareInstagramById(args: args!)
         }
         else if(call.method.elementsEqual(_methodTelegramShare)){
             let args = call.arguments as? Dictionary<String,Any>
@@ -324,7 +324,7 @@ public class SwiftFlutterShareMePlugin: NSObject, FlutterPlugin, SharingDelegate
     
     // share image via instagram stories.
     // @ args image url
-    func shareInstagram2(args:Dictionary<String,Any>)  {
+    func shareInstagramById(args:Dictionary<String,Any>)  {
         let id=args["id"] as! String
 
         guard let instagramURL = NSURL(string: "instagram://app") else {

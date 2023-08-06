@@ -15,7 +15,7 @@ class FlutterShareMe {
   static const String _methodMessenger = 'messenger_share';
   static const String _methodTwitter = 'twitter_share';
   static const String _methodInstagramShare = 'instagram_share';
-  static const String _methodInstagramShare2 = 'instagram_share2';
+  static const String _methodInstagramShareById = 'instagram_share_id';
   static const String _methodSystemShare = 'system_share';
   static const String _methodTelegramShare = 'telegram_share';
 
@@ -182,7 +182,7 @@ class FlutterShareMe {
   }
 
   ///share file to instagram
-  Future<String?> shareToInstagram2(
+  Future<String?> shareToInstagramByAssetId(
       {required String id, FileType fileType = FileType.image}) async {
     final Map<String, dynamic> arguments = <String, dynamic>{};
     arguments.putIfAbsent('id', () => id);
@@ -195,14 +195,11 @@ class FlutterShareMe {
 
     try {
       result =
-      await _channel.invokeMethod<String>(_methodInstagramShare2, arguments);
+      await _channel.invokeMethod<String>(_methodInstagramShareById, arguments);
     } catch (e) {
       return e.toString();
     }
     return result;
   }
 
-  Future<String?> check1() async {
-    return 'check1';
-  }
 }
